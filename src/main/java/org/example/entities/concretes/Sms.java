@@ -6,10 +6,17 @@ import org.example.entities.abstracts.Entity;
 import java.util.Date;
 
 public class Sms implements Entity {
-    private int location;
-    private String msisdn;
-    private String bMsisdn;
-    private Date date;
+    private final int location;
+    private final String msisdn;
+    private final String bMsisdn;
+    private final Date date;
+
+    public Sms(int location, String msisdn, String bMsisdn) {
+        this.location = location;
+        this.msisdn = msisdn;
+        this.bMsisdn = bMsisdn;
+        this.date = new Date();
+    }
 
     @Override
     public String toString() {
@@ -19,12 +26,5 @@ public class Sms implements Entity {
                 ", \"bMsisdn\" : \"" + bMsisdn + '\"' +
                 ", \"date\" : \"" + date + '\"' +
                 '}';
-    }
-
-    public Sms(int location, String msisdn, String bMsisdn) {
-        this.location = location;
-        this.msisdn = msisdn;
-        this.bMsisdn = bMsisdn;
-        this.date = new Date();
     }
 }
