@@ -1,9 +1,8 @@
 package org.example.repo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import org.example.hazelcast_operations.HazelcastSimulatorOperation;
+
+import java.util.*;
 
 public class RandomValues {
     private static  Random random = new Random();
@@ -15,8 +14,7 @@ public class RandomValues {
     }
 
     public static int getRandomDuration(){
-        int duration = random.nextInt(350);
-        return duration;
+        return random.nextInt(350);
     }
 
     public static int getRandomLocation(){
@@ -26,6 +24,12 @@ public class RandomValues {
 
     public static int getRandomBNumber(){
         return random.nextInt(16);
+    }
+
+    public static String getRandomMsisdn(){
+        Collection<Object> allMsisdn = HazelcastSimulatorOperation.getAllMsisdn();
+        int index = random.nextInt(allMsisdn.size());
+        return allMsisdn.toArray()[index].toString();
     }
 
 }
