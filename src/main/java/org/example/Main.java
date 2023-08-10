@@ -18,23 +18,24 @@ public class Main {
 
         while (true) {
             int requestIndex = random.nextInt(3);
-            if (requestIndex == 0) {
-                SimulatorLogger.println("data");
-                requestDGW("data", getDataRequest());
-            } else if (requestIndex == 1) {
+//            if (requestIndex == 0) {
+//                SimulatorLogger.println("data");
+//                requestDGW("data", getDataRequest());
+//            }
+            if (requestIndex == 1 || requestIndex == 2 || requestIndex == 3) {
                 SimulatorLogger.println("voice");
                 requestDGW("voice", getVoiceRequest());
-
-            } else {
-                SimulatorLogger.println("sms");
-                requestDGW("sms", getSmsRequest());
             }
-            Thread.sleep(10000);
+//            else {
+//                SimulatorLogger.println("sms");
+//                requestDGW("sms", getSmsRequest());
+//            }
+            Thread.sleep(4000);
         }
     }
 
     public static Data getDataRequest() {
-        String msisdn = RandomValues.getRandomMsisdn();
+        String msisdn = "5368685624";//RandomValues.getRandomMsisdn();
         int dataMb = RandomValues.getRandomDataUsageMB();
         int location = RandomValues.getRandomLocation();
         int rGroup = RandomValues.getRandomBNumber();
@@ -43,25 +44,27 @@ public class Main {
     }
 
     public static Sms getSmsRequest() {
-        String msisdn = RandomValues.getRandomMsisdn();
+        String msisdn = "5368685624";//RandomValues.getRandomMsisdn();
         int location = RandomValues.getRandomLocation();
         String bMsisdn;
         do {
             bMsisdn = RandomValues.getRandomMsisdn();
         } while (msisdn.equals(bMsisdn));
+        bMsisdn = RandomValues.getRandomLocation() + bMsisdn;
         SimulatorLogger.println("from sms : " + msisdn);
         SimulatorLogger.println("to : " + bMsisdn);
         return new Sms(location, msisdn, bMsisdn);
     }
 
     public static Voice getVoiceRequest() {
-        String msisdn = RandomValues.getRandomMsisdn();
+        String msisdn = "5368685624";//RandomValues.getRandomMsisdn();
         int location = RandomValues.getRandomLocation();
         int duration = RandomValues.getRandomDuration();
         String bMsisdn;
         do {
             bMsisdn = RandomValues.getRandomMsisdn();
         } while (msisdn.equals(bMsisdn));
+        bMsisdn = RandomValues.getRandomLocation() + bMsisdn;
         SimulatorLogger.println("from call : " + msisdn);
         SimulatorLogger.println("to : " + bMsisdn);
         return new Voice(location, msisdn, duration, bMsisdn);

@@ -23,7 +23,9 @@ public class RandomValues {
     }
 
     public static int getRandomBNumber(){
-        return random.nextInt(16);
+        int randomNumber = random.nextInt(2);
+        if (randomNumber == 0){return 0;}
+        else {return 10;}
     }
 
     public static String getRandomMsisdn(){
