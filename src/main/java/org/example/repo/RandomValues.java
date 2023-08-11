@@ -8,6 +8,8 @@ public class RandomValues {
     private static  Random random = new Random();
     private static List<Integer> locations = new ArrayList<>(Arrays.asList(90,49));
 
+    //private static Collection<Object> allMsisdn = HazelcastSimulatorOperation.getAllMsisdn();
+
 
     public static int getRandomDataUsageMB(){
         return random.nextInt(750);
@@ -30,6 +32,7 @@ public class RandomValues {
 
     public static String getRandomMsisdn(){
         Collection<Object> allMsisdn = HazelcastSimulatorOperation.getAllMsisdn();
+
         int index = random.nextInt(allMsisdn.size());
         return allMsisdn.toArray()[index].toString();
     }

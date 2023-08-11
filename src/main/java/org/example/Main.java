@@ -6,9 +6,11 @@ import org.example.entities.abstracts.Entity;
 import org.example.entities.concretes.Data;
 import org.example.entities.concretes.Sms;
 import org.example.entities.concretes.Voice;
+import org.example.hazelcast_operations.HazelcastSimulatorOperation;
 import org.example.repo.RandomValues;
 import org.example.util.logger.SimulatorLogger;
 
+import java.util.Collection;
 import java.util.Random;
 
 public class Main {
@@ -18,24 +20,27 @@ public class Main {
 
         while (true) {
             int requestIndex = random.nextInt(3);
-//            if (requestIndex == 0) {
-//                SimulatorLogger.println("data");
-//                requestDGW("data", getDataRequest());
-//            }
-            if (requestIndex == 1 || requestIndex == 2 || requestIndex == 3) {
-                SimulatorLogger.println("voice");
-                requestDGW("voice", getVoiceRequest());
+            if (requestIndex == 0) {
+                SimulatorLogger.println("data");
+                Data data = getDataRequest();
+                requestDGW("data",data);
             }
-//            else {
-//                SimulatorLogger.println("sms");
-//                requestDGW("sms", getSmsRequest());
-//            }
+            else if (requestIndex == 1) {
+                SimulatorLogger.println("voice");
+                Voice voice = getVoiceRequest();
+                requestDGW("voice", voice);
+            }
+            else {
+                SimulatorLogger.println("sms");
+                Sms sms = getSmsRequest();
+                requestDGW("sms", sms);
+            }
             Thread.sleep(4000);
         }
     }
 
     public static Data getDataRequest() {
-        String msisdn = "5368685624";//RandomValues.getRandomMsisdn();
+        String msisdn = RandomValues.getRandomMsisdn();
         int dataMb = RandomValues.getRandomDataUsageMB();
         int location = RandomValues.getRandomLocation();
         int rGroup = RandomValues.getRandomBNumber();
@@ -44,27 +49,37 @@ public class Main {
     }
 
     public static Sms getSmsRequest() {
-        String msisdn = "5368685624";//RandomValues.getRandomMsisdn();
+        String msisdn = RandomValues.getRandomMsisdn();
         int location = RandomValues.getRandomLocation();
         String bMsisdn;
         do {
             bMsisdn = RandomValues.getRandomMsisdn();
         } while (msisdn.equals(bMsisdn));
-        bMsisdn = RandomValues.getRandomLocation() + bMsisdn;
+        if (location == 49){
+            bMsisdn = 90 + bMsisdn;
+        }
+        else{
+            bMsisdn = RandomValues.getRandomLocation() + bMsisdn;
+        }
         SimulatorLogger.println("from sms : " + msisdn);
         SimulatorLogger.println("to : " + bMsisdn);
         return new Sms(location, msisdn, bMsisdn);
     }
 
     public static Voice getVoiceRequest() {
-        String msisdn = "5368685624";//RandomValues.getRandomMsisdn();
+        String msisdn = RandomValues.getRandomMsisdn();
         int location = RandomValues.getRandomLocation();
         int duration = RandomValues.getRandomDuration();
         String bMsisdn;
         do {
             bMsisdn = RandomValues.getRandomMsisdn();
         } while (msisdn.equals(bMsisdn));
-        bMsisdn = RandomValues.getRandomLocation() + bMsisdn;
+        if (location == 49){
+            bMsisdn = 90 + bMsisdn;
+        }
+        else{
+            bMsisdn = RandomValues.getRandomLocation() + bMsisdn;
+        }
         SimulatorLogger.println("from call : " + msisdn);
         SimulatorLogger.println("to : " + bMsisdn);
         return new Voice(location, msisdn, duration, bMsisdn);
@@ -72,7 +87,7 @@ public class Main {
 
     public static void requestDGW(String type, Entity entity) {
         try {
-
+            System.out.println("ENTITY : "+entity.toString());
             HttpResponse<String> addSubscriberResponse = Unirest.post("http://34.105.150.121:8080/api/generateTraffic")
                     .header("Content-Type", "application/json")
                     .body("{\"type\" : \"" +
@@ -81,13 +96,14 @@ public class Main {
                             entity.toString() +
                             "}")
                     .asString();
-
+                System.out.println("STATUS CODE : " +addSubscriberResponse.getStatus());
             if (addSubscriberResponse.getStatus() != 200) {
                 System.out.println(addSubscriberResponse.getStatus());
                 System.out.println("Something went wrong.");
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("HATA VAR");
         }
     }
 }

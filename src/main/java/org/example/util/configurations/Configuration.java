@@ -6,7 +6,7 @@ import org.example.util.constants.StringConstants;
 public class Configuration {
     public static ClientConfig getConfig(){
         ClientConfig config = new ClientConfig();
-        config.getNetworkConfig().addAddress(StringConstants.hazelcastUrl);
+        config.getNetworkConfig().addAddress(StringConstants.hazelcastUrl).setSmartRouting(false);
         return config;
     }
 }
