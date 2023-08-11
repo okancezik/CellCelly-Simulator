@@ -8,8 +8,6 @@ public class RandomValues {
     private static  Random random = new Random();
     private static List<Integer> locations = new ArrayList<>(Arrays.asList(90,49));
 
-    //private static Collection<Object> allMsisdn = HazelcastSimulatorOperation.getAllMsisdn();
-
 
     public static int getRandomDataUsageMB(){
         return random.nextInt(750);
